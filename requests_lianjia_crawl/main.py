@@ -19,16 +19,10 @@ headers={
     'referer':'https://sh.lianjia.com/',
     'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0'
 }
-
 #发送请求
-
 def crawl_lingang(page,TARGET_REGION):
-    """
-    爬取临港区域单个页码的租房数据
-    :param page: 页码（1-19）
-    """
+    """爬取临港区域单个页码的租房数据:param page: 页码（1-19） """
     # 处理“临港”的URL编码（避免中文乱码：临港 → %E4%B8%B4%E6%B8%AF）
-
     encoded_region = quote(TARGET_REGION, encoding='utf-8')
     # 构造分页URL（遵循链家格式：pg+页码+rs+区域）
     url = f'https://sh.lianjia.com/zufang/pg{page}rs{encoded_region}/#contentList'

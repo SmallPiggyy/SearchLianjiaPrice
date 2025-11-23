@@ -3,12 +3,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup
 import time
 import csv
 import random
-# 导入fun模块中的get_house_info函数
-from requests_lianjia_crawl.fun import get_house_info
-
 # 1. 配置Chrome选项
 chrome_options = Options()
 chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9527")  # 连接已开的浏览器
@@ -16,40 +14,34 @@ chrome_options.add_argument('--disable-blink-features=AutomationControlled')  # 
 # 用于存储所有页面的房源数据
 all_results = []
 current_page = 1
-URL = "https://sh.lianjia.com/zufang/rs%E4%B8%B4%E6%B8%AF/"
-
-
+URL="https://sh.lianjia.com/zufang/rs%E4%B8%B4%E6%B8%AF/"
 def parse_page_data(page_source, page_number):
-    """解析当前页面的房源数据，使用fun模块中的get_house_info函数"""
-    from parsel import Selector
-
-    # 使用parsel解析页面，与fun.py中的解析方式保持一致
-    selector = Selector(text=page_source)
-    # 使用与fun.py相同的选择器来获取房屋列表
-    house_elements = selector.css('div.content__list--item')
+    """解析当前页面的房源数据"""
+    soup = BeautifulSoup(page_source, 'html.parser')
+    house_items = soup.find_all('div', class_='content__list--item')
 
     page_results = []
-    for idx, house in enumerate(house_elements, 1):
+    for idx, item in enumerate(house_items, 1):
         global_id = (page_number - 1) * 30 + idx  # 全局序号
+        title = item.find('a', class_='twoline').get_text(strip=True) if item.find('a', class_='twoline') else '无'
+        location_els = item.select('.content__list--item--des a')
+        location = '-'.join([el.get_text(strip=True) for el in location_els]) if location_els else '无'
+        des_text = item.find('p', class_='content__list--item--des').get_text(strip=True) if item.find('p',
+                                                                                                       class_='content__list--item--des') else ''
+        des_parts = [part for part in des_text.split('/') if part.strip()]
 
-        # 调用fun.py中的get_house_info函数提取房屋信息
-        house_info = get_house_info(house)
+        area = next((p for p in des_parts if '㎡' in p), '无').strip()
+        direction = next((p for p in des_parts if any(c in p for c in '南北东西')), '无').strip()
+        layout = next((p for p in des_parts if '室' in p and '厅' in p), '无').strip()
 
-        # 添加全局序号并调整字段名以保持一致性
-        formatted_result = {
+        page_results.append({
             '序号': global_id,
-            '标题': house_info['标题'],
-            '位置': house_info['区域'],  # 字段名映射
-            '面积': house_info['房子面积'],
-            '朝向': house_info['朝向'],
-            '户型': house_info['房屋类型'],
-            # 额外信息，也可以添加到结果中
-            '价格': house_info['价格'],
-            '楼层': house_info['楼层'],
-            '链接': house_info['链接']
-        }
-
-        page_results.append(formatted_result)
+            '标题': title,
+            '位置': location,
+            '面积': area,
+            '朝向': direction,
+            '户型': layout
+        })
 
     return page_results
 
@@ -96,6 +88,7 @@ try:
 
         try:
             # 尝试查找并点击下一页按钮
+            # 使用XPath和class两种方式查找，提高兼容性
             next_button = None
             try:
                 # 尝试使用class查找
@@ -108,7 +101,7 @@ try:
 
             # 检查下一页按钮是否可用
             if next_button.is_enabled() and next_button.is_displayed():
-                # 记录当前页面源码
+                # 记录当前页面源码或某个唯一标识，用于后续验证是否成功翻页
                 current_page_source = driver.page_source
 
                 # 随机暂停1-3秒
@@ -121,7 +114,8 @@ try:
                 current_page += 1
                 print(f"正在跳转到第 {current_page} 页...")
 
-                # 等待页面内容变化
+                # 改进的等待逻辑：等待页面内容变化或新内容加载
+                # 方法1：等待房源列表元素更新或变化
                 try:
                     WebDriverWait(driver, 10).until(
                         lambda d: d.page_source != current_page_source
@@ -129,11 +123,12 @@ try:
                     print(f"页面已更新，确认跳转到第 {current_page} 页")
                 except:
                     print("页面可能未更新，尝试另一种等待方式...")
+                    # 方法2：等待房源列表中的某些元素重新出现
                     WebDriverWait(driver, 10).until(
                         EC.presence_of_element_located((By.CLASS_NAME, 'content__list--item'))
                     )
 
-                # 额外的随机等待
+                # 额外的随机等待，模拟人类浏览行为
                 time.sleep(random.uniform(1, 2))
             else:
                 print("下一页按钮不可点击，已到达最后一页")
@@ -144,24 +139,17 @@ try:
             print("已到达最后一页或遇到问题，停止爬取")
             break
 
-    # 更新CSV字段名，包含更多从fun.py获取的信息
-    fieldnames = ['序号', '标题', '位置', '面积', '朝向', '户型', '价格', '楼层', '链接']
-
     # 保存所有结果
     with open('链家租房数据_Selenium.csv', 'w', newline='', encoding='utf-8-sig') as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=['序号', '标题', '位置', '面积', '朝向', '户型'])
         writer.writeheader()
         writer.writerows(all_results)
-
     print(f"\n数据爬取全部完成！共获取 {len(all_results)} 条房源信息")
     print("前5条数据预览：")
     for item in all_results[:5]:
         print(f"\n{item['序号']}. 标题：{item['标题']}")
         print(f"   位置：{item['位置']}")
         print(f"   面积：{item['面积']} | 朝向：{item['朝向']} | 户型：{item['户型']}")
-        print(f"   价格：{item['价格']} | 楼层：{item['楼层']}")
-        print(f"   链接：{item['链接']}")
-
     print("程序执行完成，浏览器保持打开状态")
 
 except Exception as e:
@@ -169,9 +157,8 @@ except Exception as e:
     # 保存已爬取的数据
     if all_results:
         print("正在保存已爬取的数据...")
-        fieldnames = ['序号', '标题', '位置', '面积', '朝向', '户型', '价格', '楼层', '链接']
         with open('链家租房数据_Selenium.csv', 'w', newline='', encoding='utf-8-sig') as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer = csv.DictWriter(f, fieldnames=['序号', '标题', '位置', '面积', '朝向', '户型'])
             writer.writeheader()
             writer.writerows(all_results)
         print(f"已保存 {len(all_results)} 条房源信息")
