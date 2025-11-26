@@ -8,10 +8,11 @@ import csv
 import random
 # 导入fun模块中的get_house_info函数
 from requests_lianjia_crawl.fun import get_house_info
-
+from parsel import Selector
 # 1. 配置Chrome选项
+
 chrome_options = Options()
-chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9527")  # 连接已开的浏览器
+chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:8872")  # 连接已开的浏览器
 chrome_options.add_argument('--disable-blink-features=AutomationControlled')  # 隐藏自动化标识
 # 用于存储所有页面的房源数据
 all_results = []
@@ -21,13 +22,11 @@ URL = "https://sh.lianjia.com/zufang/rs%E4%B8%B4%E6%B8%AF/"
 
 def parse_page_data(page_source, page_number):
     """解析当前页面的房源数据，使用fun模块中的get_house_info函数"""
-    from parsel import Selector
 
     # 使用parsel解析页面，与fun.py中的解析方式保持一致
     selector = Selector(text=page_source)
     # 使用与fun.py相同的选择器来获取房屋列表
     house_elements = selector.css('div.content__list--item')
-
     page_results = []
     for idx, house in enumerate(house_elements, 1):
         global_id = (page_number - 1) * 30 + idx  # 全局序号

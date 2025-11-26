@@ -45,7 +45,6 @@ def parse_page_data(page_source, page_number):
 
     return page_results
 
-
 def check_for_captcha():
     """检查是否存在验证码"""
     try:
@@ -55,7 +54,6 @@ def check_for_captcha():
         return len(captcha_elements) > 0
     except Exception:
         return False
-
 
 try:
     # 尝试连接到现有浏览器
