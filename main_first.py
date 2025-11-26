@@ -47,12 +47,8 @@ def parse_page_data(page_source, page_number):
             '楼层': house_info['楼层'],
             '链接': house_info['链接']
         }
-
         page_results.append(formatted_result)
-
     return page_results
-
-
 def check_for_captcha():
     """检查是否存在验证码"""
     try:
@@ -62,7 +58,6 @@ def check_for_captcha():
         return len(captcha_elements) > 0
     except Exception:
         return False
-
 
 try:
     # 尝试连接到现有浏览器
@@ -80,17 +75,14 @@ try:
     # 分页爬取循环
     while True:
         print(f"正在爬取第 {current_page} 页数据...")
-
         # 检查是否需要验证码
         if check_for_captcha():
             print("检测到验证码，请在浏览器中手动完成验证")
             input("完成验证后，请按Enter继续...")
-
         # 获取当前页面源码并解析
         page_source = driver.page_source
         page_results = parse_page_data(page_source, current_page)
         all_results.extend(page_results)
-
         print(f"第 {current_page} 页爬取完成，获取 {len(page_results)} 条房源信息")
 
         try:
@@ -104,7 +96,6 @@ try:
             except:
                 print("未找到下一页按钮，可能已到达最后一页")
                 break
-
             # 检查下一页按钮是否可用
             if next_button.is_enabled() and next_button.is_displayed():
                 # 记录当前页面源码
@@ -114,12 +105,10 @@ try:
                 wait_time = random.uniform(1, 3)
                 print(f"随机暂停 {wait_time:.2f} 秒后继续...")
                 time.sleep(wait_time)
-
                 # 点击下一页
                 next_button.click()
                 current_page += 1
                 print(f"正在跳转到第 {current_page} 页...")
-
                 # 等待页面内容变化
                 try:
                     WebDriverWait(driver, 10).until(

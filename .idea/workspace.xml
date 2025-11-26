@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1fbae55-7cb7-4c43-8744-1da7ba962d03" name="更改" comment="version2基本实现爬虫功能">
-      <change afterPath="$PROJECT_DIR$/CrawlSellprice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Gitdemo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Gitdemo.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="d1fbae55-7cb7-4c43-8744-1da7ba962d03" name="更改" comment="开始创建爬取售卖功能">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CrawlSellprice.py" beforeDir="false" afterPath="$PROJECT_DIR$/CrawlSellprice.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_first.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_first.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openChrome.bat" beforeDir="false" afterPath="$PROJECT_DIR$/openChrome.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/remoteCrawl.py" beforeDir="false" afterPath="$PROJECT_DIR$/remoteCrawl.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,24 +33,61 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="35sM29BDZ8vQwQGLjkGQzsM9x4c" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.main_first.executor&quot;: &quot;Run&quot;,
-    &quot;Python.remoteCrawl.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.CrawlSellprice.executor": "Run",
+    "Python.main_first.executor": "Run",
+    "Python.remoteCrawl.executor": "Run",
+    "Python.text.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/tianxuanji/PycharmProjects/SearchLianjiaPrice"
   }
-}</component>
-  <component name="RunManager" selected="Python.main_first">
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\tianxuanji\PycharmProjects\SearchLianjiaPrice" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\tianxuanji\PycharmProjects\SearchLianjiaPrice\参考" />
+      <recent name="C:\Users\tianxuanji\PycharmProjects\SearchLianjiaPrice\参考\screenshots" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.CrawlSellprice">
+    <configuration name="CrawlSellprice" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Gitdemo" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/CrawlSellprice.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main_first" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Gitdemo" />
       <option name="ENV_FILES" value="" />
@@ -99,8 +132,32 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="text" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Gitdemo" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/text.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.CrawlSellprice" />
+        <item itemvalue="Python.text" />
         <item itemvalue="Python.main_first" />
         <item itemvalue="Python.remoteCrawl" />
       </list>
@@ -137,7 +194,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763894299089</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="开始创建爬取售卖功能">
+      <option name="closed" value="true" />
+      <created>1764166108670</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1764166108670</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -154,7 +219,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="version1基本实现爬虫功能" />
     <MESSAGE value="version2基本实现爬虫功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="version2基本实现爬虫功能" />
+    <MESSAGE value="开始创建爬取售卖功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="开始创建爬取售卖功能" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
