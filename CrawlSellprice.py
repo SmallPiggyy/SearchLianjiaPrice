@@ -17,7 +17,7 @@ chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x
 # 用于存储所有页面的房源数据
 all_results = []
 current_page = 1
-URL = "https://sh.fang.lianjia.com/loupan/rs%E4%B8%B4%E6%B8%AF/"
+URL = "https://sh.lianjia.com/ershoufang/pg25rs%E4%B8%B4%E6%B8%AF/"
 
 
 def parse_page_data(page_source, existing_count):
@@ -81,7 +81,7 @@ def check_for_captcha():
     """检查是否存在验证码"""
     try:
         captcha_elements = driver.find_elements(By.XPATH,
-                                                '//*[contains(@class, "captcha") or contains(@id, "captcha") or contains(text(), "人机验证")]')
+                                                '//*[contains(text(), "人机验证")]')
         return len(captcha_elements) > 0
     except Exception:
         return False
@@ -116,45 +116,55 @@ try:
 
         print(f"第 {current_page} 页爬取完成，获取 {len(page_results)} 条房源信息")
 
+
         try:
-            # 定位下一页按钮
-            next_button = WebDriverWait(driver, 3).until(
-                EC.element_to_be_clickable((By.XPATH, '//a[contains(@class, "next") and not(contains(@class, "disabled"))]'))
+            # 核心优化：通过"next"文本和class定位翻页按钮
+            # 匹配包含"next"文本且未禁用的按钮（处理中文/英文按钮文本）
+            next_button = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable(
+                    (By.XPATH,
+                     '//a[contains(text(), "next") or contains(text(), "下一页") and not(contains(@class, "disabled"))]')
+                )
             )
 
-            if next_button.is_enabled() and next_button.is_displayed():
-                # 缩短等待时间（核心优化：1-2秒）
+            # 验证按钮可交互性
+            if next_button and next_button.is_enabled() and next_button.is_displayed():
                 wait_time = random.uniform(1, 2)
                 print(f"随机暂停 {wait_time:.2f} 秒后翻页...")
                 time.sleep(wait_time)
 
-                # JS点击下一页
+                # 点击前滚动到按钮位置（避免被遮挡）
+                driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", next_button)
+                time.sleep(0.5)  # 等待滚动完成
+
+                # 执行点击
                 driver.execute_script("arguments[0].click();", next_button)
                 current_page += 1
                 print(f"正在跳转到第 {current_page} 页...")
 
-                # 缩短页面加载等待时间（8秒超时）
+                # 等待页面更新
                 try:
-                    WebDriverWait(driver, 3).until(
-                        EC.staleness_of(driver.find_element(By.CLASS_NAME, 'resblock-list-container'))
+                    # 等待列表容器更新
+                    WebDriverWait(driver, 5).until(
+                        EC.staleness_of(driver.find_element(By.CLASS_NAME, 'SellListContent'))
                     )
-                    WebDriverWait(driver, 3).until(
-                        EC.presence_of_all_elements_located((By.CLASS_NAME, 'resblock-list-container'))
+                    # 确认新页面加载完成
+                    WebDriverWait(driver, 5).until(
+                        EC.presence_of_element_located((By.CSS_SELECTOR, 'div.SellListContent div.info.clear'))
                     )
-                    print(f"页面已更新，确认跳转到第 {current_page} 页")
+                    print(f"第 {current_page} 页加载完成")
                 except:
                     print("页面加载检测超时，继续执行...")
 
-                # 额外短等待
                 time.sleep(random.uniform(0.5, 1.5))
             else:
-                print("下一页按钮不可点击，已到最后一页")
+                print("下一页按钮不可用，已到最后一页")
                 break
-        except Exception as e:
-            print(f"翻页出错: {e}")
-            print("已到最后一页或遇到问题，停止爬取")
-            break
 
+        except Exception as e:
+            print(f"翻页按钮定位失败: {e}")
+            print("未找到可用的下一页按钮，停止爬取")
+            break
     # 保存数据
     fieldnames = ['序号', '名称', '位置', '户型', '面积', '均价', '总价', '标签', '链接']
     with open('链家新房数据_Selenium2.csv', 'w', newline='', encoding='utf-8-sig') as f:
@@ -180,3 +190,4 @@ except Exception as e:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(all_results)
+
