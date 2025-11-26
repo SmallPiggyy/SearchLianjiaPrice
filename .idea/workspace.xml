@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1fbae55-7cb7-4c43-8744-1da7ba962d03" name="更改" comment="增加了新房爬取价格功能">
+    <list default="true" id="d1fbae55-7cb7-4c43-8744-1da7ba962d03" name="更改" comment="增加了二手房爬取价格功能">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CrawlSellprice.py" beforeDir="false" afterPath="$PROJECT_DIR$/CrawlSellprice.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -232,7 +231,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764171697172</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="增加了二手房爬取价格功能">
+      <option name="closed" value="true" />
+      <created>1764175371639</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764175371639</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -251,7 +258,8 @@
     <MESSAGE value="version2基本实现爬虫功能" />
     <MESSAGE value="开始创建爬取售卖功能" />
     <MESSAGE value="增加了新房爬取价格功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加了新房爬取价格功能" />
+    <MESSAGE value="增加了二手房爬取价格功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加了二手房爬取价格功能" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
